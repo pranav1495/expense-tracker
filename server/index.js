@@ -12,34 +12,34 @@ const MONGO_URI = process.env.MONGO_URI;
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3000',  // your frontend origin
+  origin: [
+    'http://localhost:3000',                   // local dev
+    'https://your-frontend.vercel.app'         // production frontend URL
+  ],
   credentials: true
 }));
 
 app.use(express.json());
 
-// Check for missing MONGO_URI
+// Check for MONGO_URI
 if (!MONGO_URI) {
   console.error('❌ MONGO_URI not set in .env file');
   process.exit(1);
 }
 
 // Connect to MongoDB
-mongoose.connect(MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('✅ MongoDB Connected'))
-.catch((err) => {
-  console.error('❌ MongoDB Connection Error:', err.message);
-  process.exit(1);
-});
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('✅ MongoDB Connected'))
+  .catch((err) => {
+    console.error('❌ MongoDB Connection Error:', err.message);
+    process.exit(1);
+  });
 
 // Routes
 app.use('/api/auth', require('./Routes/authRoutes'));
 app.use('/api/expenses', require('./Routes/expenseRoutes'));
 
-// Optional: Health check route
+// Health check
 app.get('/api/ping', (req, res) => {
   res.send({ message: '✅ Server is up and running' });
 });
