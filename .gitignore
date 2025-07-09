@@ -1,0 +1,42 @@
+# Node modules (both frontend & backend)
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS system files
+.DS_Store
+Thumbs.db
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+.env
+.env.local
+client/.env
+server/.env
+
+# Build output (frontend)
+client/build/
+client/dist/
+
+# Coverage directory used by testing tools
+coverage/
+
+# Optional npm cache directory
+.npm/
+
+# VS Code settings
+.vscode/
+
+# Mac/Windows/Unix junk
+*.swp
+*.swo
