@@ -36,8 +36,8 @@ mongoose.connect(MONGO_URI)
   });
 
 // Routes
-app.use('/api/auth', require('./Routes/authRoutes'));
-app.use('/api/expenses', require('./Routes/expenseRoutes'));
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/expenses', require('./routes/expenseRoutes'));
 
 // Health check
 app.get('/api/ping', (req, res) => {
