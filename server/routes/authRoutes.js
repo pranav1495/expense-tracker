@@ -1,3 +1,4 @@
+// Force Git to track rename
 const express = require('express');
 const router = express.Router();
 const { registerUser, loginUser } = require('../controllers/authController');
