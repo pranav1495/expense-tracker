@@ -14,7 +14,7 @@ const MONGO_URI = process.env.MONGO_URI;
 app.use(cors({
   origin: [
     'http://localhost:3000',                   // local dev
-    'https://your-frontend.vercel.app'         // production frontend URL
+    'https://expense-tracker-three-blond-95.vercel.app'         // production frontend URL
   ],
   credentials: true
 }));
