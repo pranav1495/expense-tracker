@@ -20,7 +20,6 @@ function Login() {
       localStorage.setItem('fullName', res.data.fullName);
       navigate('/dashboard');
     } catch (err) {
-      console.error('Login Error:', err);
       alert(err.response?.data?.message || 'Invalid login credentials');
     }
   };
