@@ -72,3 +72,11 @@ REACT_APP_API_URL=http://localhost:5000
 ```bash
 npm start
 ```
+
+📌 Notes
+Make sure MongoDB is running or accessible (local or cloud).
+
+Use strong secrets and environment variables in production.
+
+CORS is enabled for local development by default.
+
