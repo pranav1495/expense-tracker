@@ -1,50 +1,64 @@
-const express = require('express');
+const express  = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
-const dotenv = require('dotenv');
+const cors     = require('cors');
+const dotenv   = require('dotenv');
 
-// Load environment variables
+// ─────────────────────────────────────────────────────────────
+// 1️⃣  Load environment variables (.env)
+// ─────────────────────────────────────────────────────────────
 dotenv.config();
 
-const app = express();
-const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI;
+const app   = express();
+const PORT  = process.env.PORT || 5000;
+const MONGO = process.env.MONGO_URI;
+const FRONT = process.env.FRONTEND_ORIGIN || 'http://localhost:3000';
 
-// Middleware
+// ─────────────────────────────────────────────────────────────
+// 2️⃣  CORS – allow dev & prod + pre‑flight
+// ─────────────────────────────────────────────────────────────
 app.use(cors({
-  origin: [
-    'http://localhost:3000',                   // local dev
-    'https://expense-tracker-three-blond-95.vercel.app'         // production frontend URL
-  ],
-  credentials: true
+  origin: [FRONT, 'http://localhost:3000'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Handle pre‑flight quickly
+app.options('*', cors());
+
+// ─────────────────────────────────────────────────────────────
+// 3️⃣  JSON body parsing
+// ─────────────────────────────────────────────────────────────
 app.use(express.json());
 
-// Check for MONGO_URI
-if (!MONGO_URI) {
-  console.error('❌ MONGO_URI not set in .env file');
+// ─────────────────────────────────────────────────────────────
+// 4️⃣  MongoDB connection
+// ─────────────────────────────────────────────────────────────
+if (!MONGO) {
+  console.error('❌  MONGO_URI missing in .env');
   process.exit(1);
 }
 
-// Connect to MongoDB
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('✅ MongoDB Connected'))
-  .catch((err) => {
-    console.error('❌ MongoDB Connection Error:', err.message);
+mongoose
+  .connect(MONGO)
+  .then(() => console.log('✅  MongoDB connected'))
+  .catch(err => {
+    console.error('❌  MongoDB error:', err.message);
     process.exit(1);
   });
 
-// Routes
-app.use('/api/auth', require('./routes/authRoutes'));
+// ─────────────────────────────────────────────────────────────
+// 5️⃣  Routes
+// ─────────────────────────────────────────────────────────────
+app.use('/api/auth',     require('./routes/authRoutes'));
 app.use('/api/expenses', require('./routes/expenseRoutes'));
 
-// Health check
-app.get('/api/ping', (req, res) => {
-  res.send({ message: '✅ Server is up and running' });
-});
+app.get('/api/ping', (_, res) => res.json({ message: '✅ Server is up' }));
 
-// Start server
+// ─────────────────────────────────────────────────────────────
+// 6️⃣  Start server
+// ─────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀  API ready on :${PORT}`);
+  console.log(`🟢  Accepting requests from → ${FRONT}`);
 });
