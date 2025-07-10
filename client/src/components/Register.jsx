@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 function Register() {
   const [formData, setFormData] = useState({
     fullName: '',
-    username: '',     // ✅ Add username
+    username: '',
     email: '',
     password: ''
   });
@@ -18,11 +18,12 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/register', formData);
-      alert('Registration successful');
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, formData);
+      alert('✅ Registration successful');
       navigate('/login');
     } catch (err) {
-      alert(err.response?.data?.message || 'Registration failed');
+      console.error('Registration error:', err);
+      alert(err.response?.data?.message || '❌ Registration failed');
     }
   };
 
