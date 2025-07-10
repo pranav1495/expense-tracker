@@ -5,12 +5,11 @@ import { useNavigate } from 'react-router-dom';
 function Register() {
   const [formData, setFormData] = useState({
     fullName: '',
-    username: '',
+    username: '',     // ✅ Add username
     email: '',
     password: ''
   });
 
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) =>
@@ -18,24 +17,18 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
-      const apiURL = process.env.REACT_APP_API_URL || 'https://your-backend.onrender.com';
-      await axios.post(`${apiURL}/api/auth/register`, formData);
-
-      alert('✅ Registration successful');
+      await axios.post('http://localhost:5000/api/auth/register', formData);
+      alert('Registration successful');
       navigate('/login');
     } catch (err) {
-      console.error('❌ Registration error:', err.response?.data || err.message);
-      alert(err.response?.data?.message || '❌ Registration failed');
-    } finally {
-      setLoading(false);
+      alert(err.response?.data?.message || 'Registration failed');
     }
   };
 
   return (
     <div className="container mt-5">
-      <h3 className="text-center mb-4">Register</h3>
+      <h3 className="text-center">Register</h3>
       <form
         onSubmit={handleSubmit}
         className="card p-4 shadow mx-auto"
@@ -73,12 +66,8 @@ function Register() {
           required
           className="form-control mb-3"
         />
-        <button
-          type="submit"
-          className="btn btn-success w-100"
-          disabled={loading}
-        >
-          {loading ? 'Registering...' : 'Register'}
+        <button type="submit" className="btn btn-success w-100">
+          Register
         </button>
       </form>
     </div>

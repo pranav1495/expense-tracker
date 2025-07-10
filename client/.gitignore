@@ -1,30 +1,23 @@
-# ====== GLOBAL ======
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
 .DS_Store
-.env
-.env.*.local
-*.log
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# ====== NODE ======
-node_modules/
-
-# ====== VSCODE ======
-.vscode/
-
-# ====== FRONTEND (React) ======
-client/build/
-client/node_modules/
-client/.env
-client/.env.local
-client/.env.development.local
-client/.env.test.local
-client/.env.production.local
-
-# ====== BACKEND (Node + Express) ======
-server/node_modules/
-server/.env
-server/.env.local
-server/.env.test.local
-server/.env.production.local
